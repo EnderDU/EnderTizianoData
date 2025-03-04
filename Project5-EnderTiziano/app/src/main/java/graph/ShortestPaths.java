@@ -1,7 +1,11 @@
 package graph;
-import java.util.Map;
+import java.util.Queue;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -27,11 +31,39 @@ public class ShortestPaths {
      * back pointer to the previous node on the shortest path.
      * Precondition: origin is a node in the Graph.*/
     public void compute(Node origin) {
-        paths = new HashMap<Node,PathData>();
+        paths = new HashMap<>();
 
-        // TODO 1: implement Dijkstra's algorithm to fill paths with
-        // shortest-path data for each Node reachable from origin.
+        // Priority queue to process nodes by their current shortest distance
+        PriorityQueue<PQEntry> queue = new PriorityQueue<>(Comparator.comparingDouble(e -> e.distance));
 
+        // Initialize the origin node with distance 0
+        paths.put(origin, new PathData(0.0, null));
+        queue.add(new PQEntry(origin, 0.0));
+
+        while (!queue.isEmpty()) {
+            // Extract the node with the smallest distance
+            PQEntry currentEntry = queue.poll();
+            Node currentNode = currentEntry.node;
+            double currentDistance = currentEntry.distance;
+
+            // Skip if we've already found a shorter path to this node
+            if (paths.get(currentNode).distance < currentDistance) {
+                continue;
+            }
+
+            // Explore each neighbor
+            for (Map.Entry<Node, Double> neighborEntry : currentNode.getNeighbors().entrySet()) {
+                Node neighbor = neighborEntry.getKey();
+                double edgeWeight = neighborEntry.getValue();
+                double newDistance = currentDistance + edgeWeight;
+
+                // If this is a shorter path to the neighbor, update the distance and add to the queue
+                if (!paths.containsKey(neighbor) || newDistance < paths.get(neighbor).distance) {
+                    paths.put(neighbor, new PathData(newDistance, currentNode));
+                    queue.add(new PQEntry(neighbor, newDistance));
+                }
+            }
+        }
     }
 
     /** Returns the length of the shortest path from the origin to destination.
@@ -68,6 +100,16 @@ public class ShortestPaths {
         public PathData(double dist, Node prev) {
             distance = dist;
             previous = prev;
+        }
+    }
+    
+    private static class PQEntry {
+        Node node;
+        double distance;
+
+        PQEntry(Node node, double distance) {
+            this.node = node;
+            this.distance = distance;
         }
     }
 
