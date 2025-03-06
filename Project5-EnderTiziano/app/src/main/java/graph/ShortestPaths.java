@@ -64,6 +64,21 @@ public class ShortestPaths {
                 }
             }
         }
+        
+      
+    }
+    
+    @Override
+    public String toString() {
+    	String output = "";
+    	if(paths == null) {
+    		return "";
+    	}
+    	for(Map.Entry<Node, PathData> entry: paths.entrySet()) {
+    		output += "Node: " +entry.getKey().toString() + " Previous/Distance: " + entry.getValue().toString() + " || ";
+    	}
+    	return output;
+    	
     }
 
     /** Returns the length of the shortest path from the origin to destination.
@@ -101,6 +116,12 @@ public class ShortestPaths {
             distance = dist;
             previous = prev;
         }
+        
+        @Override
+        public String toString() {
+        	return this.previous + " " + this.distance;
+        }
+        
     }
     
     private static class PQEntry {
