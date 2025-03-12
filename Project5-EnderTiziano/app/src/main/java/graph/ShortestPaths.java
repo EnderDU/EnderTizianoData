@@ -1,3 +1,10 @@
+// Authors: Ender Peyzner, Tiziano Pessi 
+// Date: March 12, 2025
+// Purpose: Up to TO-DO 4.0. Implemented Shortest Path Length, Shortest Path, and included into Main
+
+
+
+
 package graph;
 import java.util.Queue;
 import java.util.Collection;
@@ -88,7 +95,29 @@ public class ShortestPaths {
     public double shortestPathLength(Node destination) {
         // TODO 2 - implement this method to fetch the shortest path length
         // from the paths data computed by Dijkstra's algorithm.
-        throw new UnsupportedOperationException();
+    	if (!paths.containsKey(destination)) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        double length = 0.0;
+        PathData data = paths.get(destination);
+
+        // Traverse the path from the destination back to the origin
+        while (data != null && data.previous != null) {
+            length += data.distance;
+            data = paths.get(data.previous);
+        }
+
+        // If the destination is the same as the origin, return 0.0
+        if (data != null && data.previous == null) {
+            return length;
+        } else {
+            // If no path exists, return Double.POSITIVE_INFINITY
+            return Double.POSITIVE_INFINITY;
+        }
+    	  
+    	
+        
     }
 
     /** Returns a LinkedList of the nodes along the shortest path from origin
@@ -123,7 +152,7 @@ public class ShortestPaths {
         }
         
     }
-    
+    // Helper class for the compute function. Saves Node and current distance
     private static class PQEntry {
         Node node;
         double distance;
