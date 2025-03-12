@@ -40,7 +40,8 @@ public class ShortestPaths {
     public void compute(Node origin) {
         paths = new HashMap<>();
 
-        // Priority queue to process nodes by their current shortest distance
+        // Priority queue orders nodes by current shortest distance from origin
+        // for efficient selection of next node to process
         PriorityQueue<PQEntry> queue = new PriorityQueue<>(Comparator.comparingDouble(e -> e.distance));
 
         // Initialize the origin node with distance 0
@@ -53,12 +54,12 @@ public class ShortestPaths {
             Node currentNode = currentEntry.node;
             double currentDistance = currentEntry.distance;
 
-            // Skip if we've already found a shorter path to this node
+            // Skip stale entries in queue (we already found a better path)
             if (paths.get(currentNode).distance < currentDistance) {
                 continue;
             }
 
-            // Explore each neighbor
+            // For each neighbor, try to find shorter path through current node
             for (Map.Entry<Node, Double> neighborEntry : currentNode.getNeighbors().entrySet()) {
                 Node neighbor = neighborEntry.getKey();
                 double edgeWeight = neighborEntry.getValue();
@@ -93,31 +94,11 @@ public class ShortestPaths {
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public double shortestPathLength(Node destination) {
-        // TODO 2 - implement this method to fetch the shortest path length
-        // from the paths data computed by Dijkstra's algorithm.
-    	if (!paths.containsKey(destination)) {
+        // Return infinity if no path exists to destination
+        if (!paths.containsKey(destination)) {
             return Double.POSITIVE_INFINITY;
         }
-
-        double length = 0.0;
-        PathData data = paths.get(destination);
-
-        // Traverse the path from the destination back to the origin
-        while (data != null && data.previous != null) {
-            length += data.distance;
-            data = paths.get(data.previous);
-        }
-
-        // If the destination is the same as the origin, return 0.0
-        if (data != null && data.previous == null) {
-            return length;
-        } else {
-            // If no path exists, return Double.POSITIVE_INFINITY
-            return Double.POSITIVE_INFINITY;
-        }
-    	  
-    	
-        
+        return paths.get(destination).distance;
     }
 
     /** Returns a LinkedList of the nodes along the shortest path from origin
@@ -127,7 +108,7 @@ public class ShortestPaths {
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public LinkedList<Node> shortestPath(Node destination) {
-        // If no path exists to the destination
+        // Return null if no path exists to destination
         if (!paths.containsKey(destination)) {
             return null;
         }
@@ -135,7 +116,7 @@ public class ShortestPaths {
         LinkedList<Node> path = new LinkedList<>();
         Node current = destination;
 
-        // Work backwards from destination to origin
+        // Reconstruct path by following previous pointers from destination to origin
         while (current != null) {
             path.addFirst(current);
             PathData data = paths.get(current);
@@ -220,7 +201,7 @@ public class ShortestPaths {
         }
         graph.report();
 
-        // Create ShortestPaths object and compute from origin
+        // Compute shortest paths from origin node specified in arguments
         ShortestPaths sp = new ShortestPaths();
         Node origin = graph.getNode(SidewalkOrigCode);
         sp.compute(origin);
