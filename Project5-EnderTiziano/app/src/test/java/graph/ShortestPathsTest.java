@@ -1,3 +1,8 @@
+// Authors: Ender Peyzner, Tiziano Pessi 
+// Date: March 12, 2025
+// Purpose: Made tests to ensure the dijkstra algorithm works correctly
+
+
 package graph;
 
 import static org.junit.Assert.*;

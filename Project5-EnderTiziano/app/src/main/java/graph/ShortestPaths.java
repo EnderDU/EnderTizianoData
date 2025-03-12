@@ -127,10 +127,22 @@ public class ShortestPaths {
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public LinkedList<Node> shortestPath(Node destination) {
-        // TODO 3 - implement this method to reconstruct sequence of Nodes
-        // along the shortest path from the origin to destination using the
-        // paths data computed by Dijkstra's algorithm.
-        throw new UnsupportedOperationException();
+        // If no path exists to the destination
+        if (!paths.containsKey(destination)) {
+            return null;
+        }
+
+        LinkedList<Node> path = new LinkedList<>();
+        Node current = destination;
+
+        // Work backwards from destination to origin
+        while (current != null) {
+            path.addFirst(current);
+            PathData data = paths.get(current);
+            current = data.previous;
+        }
+
+        return path;
     }
 
 
@@ -188,38 +200,39 @@ public class ShortestPaths {
     }
 
     public static void main(String[] args) {
-      // read command line args
-      String fileType = args[0];
-      String fileName = args[1];
-      String SidewalkOrigCode = args[2];
+        // read command line args
+        String fileType = args[0];
+        String fileName = args[1];
+        String SidewalkOrigCode = args[2];
 
-      String SidewalkDestCode = null;
-      if (args.length == 4) {
-        SidewalkDestCode = args[3];
-      }
+        String SidewalkDestCode = null;
+        if (args.length == 4) {
+            SidewalkDestCode = args[3];
+        }
 
-      // parse a graph with the given type and filename
-      Graph graph;
-      try {
-          graph = parseGraph(fileType, fileName);
-      } catch (FileNotFoundException e) {
-          System.out.println("Could not open file " + fileName);
-          return;
-      }
-      graph.report();
+        // parse a graph with the given type and filename
+        Graph graph;
+        try {
+            graph = parseGraph(fileType, fileName);
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open file " + fileName);
+            return;
+        }
+        graph.report();
 
+        // Create ShortestPaths object and compute from origin
+        ShortestPaths sp = new ShortestPaths();
+        Node origin = graph.getNode(SidewalkOrigCode);
+        sp.compute(origin);
 
-      // TODO 4: create a ShortestPaths object, use it to compute shortest
-      // paths data from the origin node given by origCode.
+        // TODO 5:
+        // If destCode was not given, print each reachable node followed by the
+        // length of the shortest path to it from the origin.
 
-      // TODO 5:
-      // If destCode was not given, print each reachable node followed by the
-      // length of the shortest path to it from the origin.
-
-      // TODO 6:
-      // If destCode was given, print the nodes in the path from
-      // origCode to destCode, followed by the total path length
-      // If no path exists, print a message saying so.
+        // TODO 6:
+        // If destCode was given, print the nodes in the path from
+        // origCode to destCode, followed by the total path length
+        // If no path exists, print a message saying so.
     }
 }
 
