@@ -209,7 +209,7 @@ public class ShortestPaths {
         if (SidewalkDestCode == null) {
             // TODO 5: Print all reachable nodes and their shortest path lengths
             System.out.println("Shortest paths from " + SidewalkOrigCode + ":");
-            for (Node node : graph.getNodes()) {
+            for (Node node : graph.getNodes().values()) {
                 double pathLength = sp.shortestPathLength(node);
                 if (pathLength != Double.POSITIVE_INFINITY) {
                     System.out.println(node.toString() + ": " + pathLength);
