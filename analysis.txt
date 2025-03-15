@@ -1,1 +1,3 @@
-The shorted path compute method
+The shorted path compute method uses a priority queue implemented via a binary heap in order to select the next node. The poll() method operates in O(logn) time therefore selection from frontier node to the selected node is also O(long). One thing that should be addressed is that we skip nodes that we have seen before but that does not affect run time. 
+
+The for loop iterates over neighbors and adds new nodes to the priority queue. The queue.add() method operates in O(logn) therefore the body of the for method operates in O(logn) time. 

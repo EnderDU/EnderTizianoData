@@ -1,1 +1,6 @@
+One thing that could be better is the fact that we add duplicate values to the priority queue. While this does not affect the actual results of the code itself it could lead to some efficiency issues.
 
+One important lesson that we learned is that planning the code out is very important. What we did in the past affects the future so if we implement the start of the code whilst planning for the future, the methods that we implement later are a lot easier to write. One example of this is when writing the shortest path method. Since our compute method was implemented properly and the hash map was well planned the shortest path method was extremely easy to implement. This is a good lesson to learn for the field since in our careers we will most likely also need to plan ahead. 
+
+
+The most challenging part was to implement the Djirktras algorithm. This was difficult because we had to do a priority queue which we had to learn the implementation of as well as figure out that we had to make a new class in order to make it "priority". Looking back however we realized we did more work than we had to since the priority qeue was already implemented for us and we just missed it somehow. In the future we definitely need to look at the provided code better. Also making the test cases for the functions was a bit challenging since we had to consider all edge cases. 
